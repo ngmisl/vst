@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Visual Sensitivity Test (VST)</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="manifest" href="manifest.json" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Visual Sensitivity Test (VST)</h1>
+            <p>
+                This test measures your visual processing speed. Press the
+                spacebar as quickly as possible when you see a triangle appear.
+                The test consists of 10 trials for each type (simple and
+                complex).
+                <a
+                    href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10904745/pdf/41598_2024_Article_55637.pdf"
+                    target="_blank"
+                    >Visual processing speed and its association with future
+                    dementia development in a population‑based prospective
+                    cohort: EPIC‑Norfolk</a
+                >
+                <br /><b
+                    >Click Start Test and hit Spacebar when a triangle
+                    appears.</b
+                >
+            </p>
+            <div id="testArea">
+                <div id="target"></div>
+            </div>
+            <button id="startBtn">Start Test</button>
+            <div id="result"></div>
+            <div id="recommendation"></div>
+        </div>
+        <script src="script.js"></script>
+        <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                    .register("/sw.js")
+                    .then((reg) =>
+                        console.log("Service worker registered:", reg),
+                    )
+                    .catch((err) =>
+                        console.log("Service worker registration failed:", err),
+                    );
+            }
+        </script>
+    </body>
+</html>
