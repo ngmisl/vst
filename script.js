@@ -95,11 +95,16 @@ function calculateAverageTime() {
   return averageMs;
 }
 
+function calculateScore(averageMs) {
+  return Math.log(averageMs);
+}
+
 function finishSimpleTest() {
   isSimpleTest = false;
   const averageTime = calculateAverageTime();
-  console.log(`Simple VST Score: ${averageTime.toFixed(2)} ms`);
-  resultDiv.innerHTML = `<p>Simple VST Score: ${averageTime.toFixed(2)} ms</p>`;
+  const simpleScore = calculateScore(averageTime);
+  console.log(`Simple VST Score: ${simpleScore.toFixed(2)}`);
+  resultDiv.innerHTML = `<p>Simple VST Score: ${simpleScore.toFixed(2)}</p>`;
   startBtn.textContent = "Start Complex Test";
   startBtn.style.display = "block";
   target.style.borderBottom = "50px solid #000";
@@ -109,25 +114,35 @@ function finishSimpleTest() {
 
 function finishComplexTest() {
   const averageTime = calculateAverageTime();
-  console.log(`Complex VST Score: ${averageTime.toFixed(2)} ms`);
-  resultDiv.innerHTML += `<p>Complex VST Score: ${averageTime.toFixed(2)} ms</p>`;
+  const complexScore = calculateScore(averageTime);
+  console.log(`Complex VST Score: ${complexScore.toFixed(2)}`);
+  resultDiv.innerHTML += `<p>Complex VST Score: ${complexScore.toFixed(2)}</p>`;
   const simpleScore = parseFloat(
     resultDiv.children[0].textContent.split(": ")[1],
   );
-  showRecommendation(simpleScore, averageTime);
+  showRecommendation(simpleScore, complexScore);
   startBtn.style.display = "none";
 }
 
 function showRecommendation(simpleScore, complexScore) {
   let recommendation = "<h2>Recommendation:</h2>";
 
-  // Adjusted thresholds based on typical reaction times
-  const simpleThreshold = 500; // 500 ms for simple VST
-  const complexThreshold = 1000; // 1000 ms for complex VST
+  // Mean and SD from the study
+  const simpleVSTMean = 6.48;
+  const simpleVSTSD = 0.27;
+  const complexVSTMean = 7.72;
+  const complexVSTSD = 0.46;
 
-  if (simpleScore > simpleThreshold || complexScore > complexThreshold) {
+  // Calculate z-scores
+  const simpleZScore = (simpleScore - simpleVSTMean) / simpleVSTSD;
+  const complexZScore = (complexScore - complexVSTMean) / complexVSTSD;
+
+  // Define threshold for increased risk (e.g., 1 SD above mean)
+  const riskThreshold = 1;
+
+  if (simpleZScore > riskThreshold || complexZScore > riskThreshold) {
     recommendation += `
-      <p>Your VST scores suggest slower visual processing speed, which may indicate an increased risk of cognitive decline. We recommend:</p>
+      <p>Your VST scores suggest slower visual processing speed compared to the study average, which may indicate an increased risk of cognitive decline. We recommend:</p>
       <ul>
         <li>Consult with a healthcare professional for a comprehensive cognitive assessment.</li>
         <li>Consider lifestyle modifications:
@@ -145,7 +160,7 @@ function showRecommendation(simpleScore, complexScore) {
     `;
   } else {
     recommendation += `
-      <p>Your VST scores suggest normal visual processing speed. However, it's always beneficial to maintain a healthy lifestyle and engage in regular cognitive activities.</p>
+      <p>Your VST scores are within the normal range based on the study average. However, it's always beneficial to maintain a healthy lifestyle and engage in regular cognitive activities.</p>
     `;
   }
   recommendationDiv.innerHTML = recommendation;
