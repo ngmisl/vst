@@ -29,11 +29,11 @@ function runSimpleTrial() {
     setTimeout(
       () => {
         showTarget();
-        trialStart = Date.now();
+        trialStart = performance.now();
         isWaitingForSpacebar = true;
       },
       Math.random() * 2000 + 1000,
-    );
+    ); // Random delay between 1-3 seconds
   } else {
     finishSimpleTest();
   }
@@ -44,11 +44,11 @@ function runComplexTrial() {
     setTimeout(
       () => {
         showComplexTarget();
-        trialStart = Date.now();
+        trialStart = performance.now();
         isWaitingForSpacebar = true;
       },
       Math.random() * 2000 + 1000,
-    );
+    ); // Random delay between 1-3 seconds
   } else {
     finishComplexTest();
   }
@@ -61,12 +61,10 @@ function showTarget() {
 }
 
 function showComplexTarget() {
-  target.style.display = "block";
+  showTarget();
   target.style.borderBottom = "30px solid red";
   target.style.borderLeft = "15px solid transparent";
   target.style.borderRight = "15px solid transparent";
-  target.style.left = `${Math.random() * (testArea.offsetWidth - 30)}px`;
-  target.style.top = `${Math.random() * (testArea.offsetHeight - 30)}px`;
 }
 
 document.addEventListener("keydown", function (event) {
@@ -80,7 +78,7 @@ function endTrial() {
   if (!isWaitingForSpacebar) return;
 
   isWaitingForSpacebar = false;
-  const trialTime = Date.now() - trialStart;
+  const trialTime = performance.now() - trialStart;
   trialTimes.push(trialTime);
   target.style.display = "none";
   currentTrial++;
@@ -91,10 +89,17 @@ function endTrial() {
   }
 }
 
+function calculateAverageTime() {
+  const averageMs = trialTimes.reduce((a, b) => a + b, 0) / trialTimes.length;
+  console.log(`Average time (ms): ${averageMs.toFixed(2)}`);
+  return averageMs;
+}
+
 function finishSimpleTest() {
   isSimpleTest = false;
-  const simpleScore = Math.log(calculateAverageTime());
-  resultDiv.innerHTML = `<p>Simple VST Score: ${simpleScore.toFixed(2)}</p>`;
+  const averageTime = calculateAverageTime();
+  console.log(`Simple VST Score: ${averageTime.toFixed(2)} ms`);
+  resultDiv.innerHTML = `<p>Simple VST Score: ${averageTime.toFixed(2)} ms</p>`;
   startBtn.textContent = "Start Complex Test";
   startBtn.style.display = "block";
   target.style.borderBottom = "50px solid #000";
@@ -103,43 +108,45 @@ function finishSimpleTest() {
 }
 
 function finishComplexTest() {
-  const complexScore = Math.log(calculateAverageTime());
-  resultDiv.innerHTML += `<p>Complex VST Score: ${complexScore.toFixed(2)}</p>`;
-  showRecommendation(
-    parseFloat(resultDiv.children[0].textContent.split(": ")[1]),
-    complexScore,
+  const averageTime = calculateAverageTime();
+  console.log(`Complex VST Score: ${averageTime.toFixed(2)} ms`);
+  resultDiv.innerHTML += `<p>Complex VST Score: ${averageTime.toFixed(2)} ms</p>`;
+  const simpleScore = parseFloat(
+    resultDiv.children[0].textContent.split(": ")[1],
   );
+  showRecommendation(simpleScore, averageTime);
   startBtn.style.display = "none";
-}
-
-function calculateAverageTime() {
-  return trialTimes.reduce((a, b) => a + b, 0) / trialTimes.length / 1000;
 }
 
 function showRecommendation(simpleScore, complexScore) {
   let recommendation = "<h2>Recommendation:</h2>";
-  if (simpleScore > 6.48 || complexScore > 7.72) {
+
+  // Adjusted thresholds based on typical reaction times
+  const simpleThreshold = 500; // 500 ms for simple VST
+  const complexThreshold = 1000; // 1000 ms for complex VST
+
+  if (simpleScore > simpleThreshold || complexScore > complexThreshold) {
     recommendation += `
-            <p>Your VST scores indicate a potential increased risk of future dementia. We recommend:</p>
-            <ul>
-                <li>Consult with a healthcare professional for a comprehensive cognitive assessment.</li>
-                <li>Consider lifestyle modifications:
-                    <ul>
-                        <li>Increase physical activity levels</li>
-                        <li>Improve overall health status</li>
-                        <li>Manage chronic conditions like diabetes</li>
-                        <li>Address any visual problems</li>
-                    </ul>
-                </li>
-                <li>Engage in cognitive stimulation activities.</li>
-                <li>Consider combining the VST with other neuropsychological tests for a more comprehensive risk assessment.</li>
-                <li>Schedule regular follow-ups and monitoring of cognitive function.</li>
-            </ul>
-        `;
+      <p>Your VST scores suggest slower visual processing speed, which may indicate an increased risk of cognitive decline. We recommend:</p>
+      <ul>
+        <li>Consult with a healthcare professional for a comprehensive cognitive assessment.</li>
+        <li>Consider lifestyle modifications:
+          <ul>
+            <li>Increase physical activity levels</li>
+            <li>Improve overall health status</li>
+            <li>Manage chronic conditions like diabetes</li>
+            <li>Address any visual problems</li>
+          </ul>
+        </li>
+        <li>Engage in cognitive stimulation activities.</li>
+        <li>Consider combining the VST with other neuropsychological tests for a more comprehensive risk assessment.</li>
+        <li>Schedule regular follow-ups and monitoring of cognitive function.</li>
+      </ul>
+    `;
   } else {
     recommendation += `
-            <p>Your VST scores do not indicate an increased risk of future dementia. However, it's always beneficial to maintain a healthy lifestyle and engage in regular cognitive activities.</p>
-        `;
+      <p>Your VST scores suggest normal visual processing speed. However, it's always beneficial to maintain a healthy lifestyle and engage in regular cognitive activities.</p>
+    `;
   }
   recommendationDiv.innerHTML = recommendation;
 }
