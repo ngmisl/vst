@@ -45,11 +45,3 @@ This web application provides a Visual Sensitivity Test (VST) to measure visual 
 ## Contributing
 
 Contributions are welcome. Please open an issue or submit a pull request.
-
-## License
-
-[Add your chosen license here]
-
-## Contact
-
-[Your contact information]
