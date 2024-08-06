@@ -35,7 +35,7 @@ Scores more than one standard deviation above these means may suggest slower vis
 
 ## Research Basis
 
-This test is based on the study: [Insert full citation of the original research paper]
+This test is based on the study: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10904745/pdf/41598_2024_Article_55637.pdf
 
 For those interested in the full research methodology and findings, please refer to the original paper.
 
@@ -51,7 +51,3 @@ The test is implemented using HTML, CSS, and JavaScript. The core logic includes
 ## Feedback and Contributions
 
 We welcome feedback and contributions to improve this tool. Please submit issues or pull requests through our GitHub repository.
-
-## License
-
-[Insert appropriate license information]
