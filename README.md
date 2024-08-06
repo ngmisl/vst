@@ -1,47 +1,57 @@
-# Visual Sensitivity Test (VST)
+# Visual Sensitivity Test (VST) for Cognitive Health
 
-## Description
+## Overview
 
-This web application provides a Visual Sensitivity Test (VST) to measure visual processing speed and assess cognitive function. It includes both simple and complex trials, offering insights into potential cognitive health risks.
+This web application implements a simplified version of the Visual Sensitivity Test (VST) based on research conducted by [insert authors' names] in their study [insert study title and year]. The VST is designed to measure visual processing speed, which has been associated with cognitive health and potential risk of future dementia.
 
-## Features
+## How It Works
 
-- Simple VST with 10 trials
-- Complex VST with 10 trials
-- Automatic score calculation
-- Personalized recommendations based on test results
-- Progressive Web App (PWA) functionality for offline use
+1. The test consists of two parts: a simple VST and a complex VST.
+2. In each part, users are presented with visual stimuli and must respond as quickly as possible by pressing the spacebar.
+3. The test measures reaction times, which are then log-transformed and compared to baseline data from the original study.
 
-## Installation
+## Interpretation of Results
 
-1. Clone this repository
-2. Ensure you have a web server that supports HTTPS
-3. Place all files in your web server directory
+The test provides a basic assessment by comparing your scores to the mean scores from the original study:
 
-## Usage
+- Simple VST mean: 6.48 (SD = 0.27)
+- Complex VST mean: 7.72 (SD = 0.46)
 
-1. Open the application in a web browser
-2. Click "Start Test" to begin the Simple VST
-3. Press the spacebar when you see a triangle appear
-4. After completing the Simple VST, start the Complex VST
-5. View your results and recommendations
+Scores more than one standard deviation above these means may suggest slower visual processing speed, which the original study associated with an increased risk of future cognitive decline.
 
-## Files
+## Important Limitations and Disclaimers
 
-- `index.html`: Main HTML structure
-- `style.css`: Styling for the application
-- `script.js`: Core functionality and test logic
-- `sw.js`: Service Worker for offline capabilities
-- `manifest.json`: PWA manifest file
-- `icon-192x192.png`: App icon (192x192)
-- `icon-512x512.png`: App icon (512x512)
+1. **Simplified Version**: This online test is a simplified version of the methodology used in the original research. It does not replicate the full complexity of the study's analysis.
 
-## Technical Details
+2. **Not Diagnostic**: This test is not a diagnostic tool. It cannot determine if an individual has or will develop dementia.
 
-- The VST uses logarithmic scoring
-- Simple VST cutoff: 6.48
-- Complex VST cutoff: 7.72
+3. **Lack of Longitudinal Data**: The original study was longitudinal, following participants over time. This online version provides only a snapshot assessment.
 
-## Contributing
+4. **Limited Factors**: The original research considered various demographic and health factors which are not accounted for in this simplified version.
 
-Contributions are welcome. Please open an issue or submit a pull request.
+5. **Individual Variation**: Many factors can affect test performance on a given day, including fatigue, distractions, or technical issues.
+
+6. **Professional Advice**: For accurate assessment of cognitive health and dementia risk, always consult with qualified healthcare professionals.
+
+## Research Basis
+
+This test is based on the study: [Insert full citation of the original research paper]
+
+For those interested in the full research methodology and findings, please refer to the original paper.
+
+## Technical Implementation
+
+The test is implemented using HTML, CSS, and JavaScript. The core logic includes:
+
+- Randomized presentation of visual stimuli
+- Accurate reaction time measurement
+- Log transformation of reaction times
+- Calculation of z-scores based on study means and standard deviations
+
+## Feedback and Contributions
+
+We welcome feedback and contributions to improve this tool. Please submit issues or pull requests through our GitHub repository.
+
+## License
+
+[Insert appropriate license information]
